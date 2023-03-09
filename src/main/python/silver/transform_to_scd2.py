@@ -1,8 +1,8 @@
 # Databricks notebook source
-from delta.tables import *
+from delta.tables import DeltaTable
 from pyspark.sql import types as T
 from pyspark.sql import functions as F
-from pyspark.sql import DataFrame
+from pyspark.sql import DataFrame, SparkSession
 
 username = (
     dbutils.notebook.entry_point.getDbutils()
@@ -33,7 +33,7 @@ dim_cols = [
 ]
 
 
-def transform_to_scd2(customer_data: DataFrame, mode: str) -> None:
+def transform_to_scd2(spark: SparkSession, customer_data: DataFrame, mode: str) -> None:
     # Generate SCD Type 2 table
 
     if mode == "test":
@@ -73,13 +73,8 @@ def transform_to_scd2(customer_data: DataFrame, mode: str) -> None:
 
     # Merge SCD Type 2 table with existing Delta Lake table
     merge_condition = "scd2.customer_id = source.customer_id"
-
-    customer_dim_df = (
-        silver_customers.alias("scd2")
-        .merge(scd2_data.alias("source"), merge_condition)
-        .whenMatchedUpdate(set = {"end_date": F.date_sub(F.current_date(), 1)})
-        .whenNotMatchedInsert(
-            values = {
+    set_values = {"end_date": F.date_sub(F.current_date(), 1)}
+    insert_values = {
                 "customer_id": F.col("source.customer_id"),
                 "customer_name": F.col("source.customer_name"),
                 "state": F.col("source.state"),
@@ -88,6 +83,11 @@ def transform_to_scd2(customer_data: DataFrame, mode: str) -> None:
                 "start_date": F.col("source.start_date"),
                 "end_date": F.col("source.end_date"),
             }
-        )
+    
+    (
+        silver_customers.alias("scd2")
+        .merge(scd2_data.alias("source"), merge_condition)
+        .whenMatchedUpdate(set=set_values)
+        .whenNotMatchedInsert(values=insert_values)
         .execute()
     )
