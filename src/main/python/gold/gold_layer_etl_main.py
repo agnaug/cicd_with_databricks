@@ -11,7 +11,6 @@ user = username[: username.index("@")]
 
 # COMMAND ----------
 
-# "Third Party"
 from gold_layer_etl import GoldAggregations
 
 

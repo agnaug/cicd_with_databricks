@@ -1,5 +1,4 @@
 # Databricks notebook source
-# "Third Party"
 from pyspark.sql.functions import *
 
 

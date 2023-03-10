@@ -1,8 +1,7 @@
 # Databricks notebook source
-# "Standard Library"
+# Standard Library
 import random
 
-# "Third Party"
 from faker import Faker
 from pyspark.sql.functions import *
 from pyspark.sql.functions import current_timestamp

@@ -1,4 +1,3 @@
-# "Third Party"
 from spark.sql import DataFrame, SparkSession
 
 
