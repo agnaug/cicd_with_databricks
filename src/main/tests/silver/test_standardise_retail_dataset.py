@@ -3,8 +3,17 @@
 
 # COMMAND ----------
 
+# "Third Party"
 import pyspark.sql.functions as F
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DecimalType, TimestampType, DateType
+from pyspark.sql.types import (
+    DateType,
+    DecimalType,
+    IntegerType,
+    StringType,
+    StructField,
+    StructType,
+    TimestampType,
+)
 
 
 def test_transform_to_silver_1():

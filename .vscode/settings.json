@@ -4,4 +4,8 @@
     "python.linting.flake8Args": [
         "--ignore=W293"
     ],
+    "cSpell.words": [
+        "dbutils",
+        "virtualenv"
+    ],
 }

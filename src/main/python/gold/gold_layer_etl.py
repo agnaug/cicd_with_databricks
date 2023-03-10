@@ -1,4 +1,5 @@
-from spark.sql import SparkSession, DataFrame
+# "Third Party"
+from spark.sql import DataFrame, SparkSession
 
 
 class GoldAggregations:

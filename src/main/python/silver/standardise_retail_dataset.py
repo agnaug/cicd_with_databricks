@@ -9,14 +9,10 @@
 
 # COMMAND ----------
 
-from pyspark.sql.functions import (
-    to_date,
-    col,
-    lit,
-    round,
-    when,
-    coalesce,
-)
+# "Third Party"
+from pyspark.sql.functions import coalesce, col, lit, round, to_date, when
+
+
 username = (
     dbutils.notebook.entry_point.getDbutils()
     .notebook()

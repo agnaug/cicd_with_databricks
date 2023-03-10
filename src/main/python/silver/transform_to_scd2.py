@@ -1,8 +1,10 @@
 # Databricks notebook source
+# "Third Party"
 from delta.tables import DeltaTable
-from pyspark.sql import types as T
-from pyspark.sql import functions as F
 from pyspark.sql import DataFrame, SparkSession
+from pyspark.sql import functions as F
+from pyspark.sql import types as T
+
 
 username = (
     dbutils.notebook.entry_point.getDbutils()

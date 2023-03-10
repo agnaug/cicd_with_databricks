@@ -1,16 +1,19 @@
 # Databricks notebook source
+# "Standard Library"
+import random
+
+# "Third Party"
+from faker import Faker
+from pyspark.sql.functions import *
+from pyspark.sql.functions import current_timestamp
 from pyspark.sql.types import (
-    StructType,
-    StructField,
-    StringType,
-    TimestampType,
     IntegerType,
     LongType,
+    StringType,
+    StructField,
+    StructType,
+    TimestampType,
 )
-from faker import Faker
-import random
-from pyspark.sql.functions import current_timestamp
-from pyspark.sql.functions import *
 
 
 # COMMAND ----------

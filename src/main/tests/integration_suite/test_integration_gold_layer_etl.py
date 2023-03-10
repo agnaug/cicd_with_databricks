@@ -4,15 +4,19 @@ user = username[:username.index("@")].replace('.', '_')
 
 # COMMAND ----------
 
+# "Standard Library"
+import os
 import sys
-import os 
+
 
 sys.path.append(os.path.abspath(f"/Workspace/Repos/{username}/cicd_with_databricks/src/main/python/gold/"))
 
 # COMMAND ----------
 
+# "Third Party"
 from gold_layer_etl import GoldAggregations
 from pyspark.sql.functions import col
+
 
 # COMMAND ----------
 
