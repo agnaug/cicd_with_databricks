@@ -1,21 +1,13 @@
 # Databricks notebook source
 # Standard Library
-import os
-import sys
 from enum import Enum
 
 from delta import DeltaTable
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 
-
-# this is needed to be able to import from relative paths
-sys.path.append(os.path.abspath(".."))
-from utils.utils import get_user, get_username
-
-
-username = get_username(dbutils)
-user = get_user(username)
+username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get().replace(".", "_")
+user = username[: username.index("@")]
 
 # COMMAND ----------
 
