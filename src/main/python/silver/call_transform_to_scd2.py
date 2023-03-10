@@ -1,9 +1,13 @@
 # Databricks notebook source
+dbutils.widgets.text("env", "")
+
+# COMMAND ----------
+
 username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get().replace(".", "_")
 
 # COMMAND ----------
 
-input_path = f"/FileStore/{username}_bronze_db/"
+input_path = f"/FileStore/{username}_bronze_db"
 
 # COMMAND ----------
 
@@ -15,8 +19,8 @@ env = dbutils.widgets.get("env")
 
 # COMMAND ----------
 
-source_dataset_df = spark.read.format("delta").load(f"{input_path}bronze_customers")
-transform_to_scd2(source_dataset_df, "prod")
+source_dataset_df = spark.read.format("delta").load(f"{input_path}/bronze_customers")
+transform_to_scd2(spark, source_dataset_df, "prod")
 
 # COMMAND ----------
 
@@ -54,4 +58,4 @@ source_dataset_df = (
     .load(input_path + "bronze_customers")
 )
 
-transform_to_scd2(source_dataset_df, "prod")
+transform_to_scd2(spark, source_dataset_df, "prod")

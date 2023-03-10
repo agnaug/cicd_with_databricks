@@ -1,4 +1,8 @@
 # Databricks notebook source
+pip install faker
+
+# COMMAND ----------
+
 # Standard Library
 import random
 
@@ -14,14 +18,12 @@ from pyspark.sql.types import (
     TimestampType,
 )
 
-
 # COMMAND ----------
 
 username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get().replace(".", "_")
 output_dir = f"/FileStore/{username}/retail_dataset/"
 
 # COMMAND ----------
-
 
 def generate_orders_data(num_rows: int, env: str) -> None:
     """
@@ -58,9 +60,7 @@ def generate_orders_data(num_rows: int, env: str) -> None:
     )
     print("Orders file generated")
 
-
 # COMMAND ----------
-
 
 def generate_sales_data(num_rows, env: str):
     fake = Faker()
@@ -96,9 +96,7 @@ def generate_sales_data(num_rows, env: str):
     )
     print("Sales file generated")
 
-
 # COMMAND ----------
-
 
 def generate_product_data(num_rows, env: str):
     """
@@ -146,9 +144,7 @@ def generate_product_data(num_rows, env: str):
     )
     print("Products file generated")
 
-
 # COMMAND ----------
-
 
 username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get().replace(".", "_")
 output_dir = f"/FileStore/{username}/retail_dataset/"
@@ -187,9 +183,7 @@ def generate_customer_data_day_0(num_rows: int, env: str):
     )
     print("Customers day0 file generated")
 
-
 # COMMAND ----------
-
 
 def generate_customer_data_day_2(env: str):
     fake = Faker()

@@ -1,31 +1,38 @@
 # Databricks notebook source
-from delta.tables import DeltaTable
+import sys
+import os
+from delta import DeltaTable
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
+from dataclasses import dataclass
+from enum import Enum
 
-from .utils.utils import get_user, get_username
-
+# this is needed to be able to import from relative paths
+sys.path.append(os.path.abspath('..'))
+from utils.utils import get_user, get_username
 
 username = get_username(dbutils)
 user = get_user(username)
 
 # COMMAND ----------
 
-
 # Define the start and end dates for each record in the dimension table
 start_date = F.to_date(F.lit("2022-01-01"))
 end_date = F.to_date(F.lit("9999-12-31"))
 
+class PipelineMode(str, Enum):
+  TEST = "test"
+  PROD = "prod"
 
-def transform_to_scd2(spark: SparkSession, customer_data: DataFrame, mode: str) -> None:
+def transform_to_scd2(spark: SparkSession, customer_data: DataFrame, mode: str = PipelineMode.PROD) -> None:
     # Generate SCD Type 2 table
 
-    if mode == "test":
+    if mode == PipelineMode.TEST:
         output_path = f"/FileStore/{user}_silver_db_test/"
         spark.sql(
             f"""
             CREATE DATABASE IF NOT EXISTS {user}_silver_db_test
-            LOCATION {output_path}
+            LOCATION '{output_path}'
             """
         )
 
@@ -41,6 +48,7 @@ def transform_to_scd2(spark: SparkSession, customer_data: DataFrame, mode: str) 
               start_date TIMESTAMP,
               end_date TIMESTAMP
               )
+            USING DELTA
             """
         )
 

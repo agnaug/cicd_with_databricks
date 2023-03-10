@@ -15,8 +15,8 @@ sales_bronze_df = spark.read.table(f"{input_db}.bronze_sales")
 
 # COMMAND ----------
 
-orders_silver_df = transform_to_silver_1(orders_bronze_df)
-sales_silver_df = transform_to_silver_2(sales_bronze_df)
+orders_silver_df = transform_bronze_orders(orders_bronze_df)
+sales_silver_df = transform_bronze_sales(sales_bronze_df)
 
 # COMMAND ----------
 
@@ -31,6 +31,6 @@ sales_silver_df.write.format("delta").mode("overwrite").saveAsTable(f"{output_db
 # COMMAND ----------
 
 product_bronze_df = spark.read.table(f"{input_db}.bronze_products")
-product_silver_df = standardize_product_data(product_bronze_df)
+product_silver_df = transform_bronze_products(product_bronze_df)
 
 product_silver_df.write.format("delta").mode("overwrite").saveAsTable(f"{output_db}.silver_products")

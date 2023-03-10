@@ -6,7 +6,6 @@ user = username[: username.index("@")]
 
 from gold_layer_etl import GoldAggregations
 
-
 # COMMAND ----------
 
 # Read in the necessary tables
@@ -38,5 +37,3 @@ query2.write.format("delta").mode("overwrite").saveAsTable(f"{user}_gold_db.tota
 query3.write.format("delta").mode("overwrite").saveAsTable(f"{user}_gold_db.best_selling_products")
 query4.write.format("delta").mode("overwrite").saveAsTable(f"{user}_gold_db.statewise_customers")
 query5.write.format("delta").mode("overwrite").saveAsTable(f"{user}_gold_db.monthly_sales")
-
-# COMMAND ----------

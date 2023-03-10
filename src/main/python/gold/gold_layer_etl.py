@@ -1,4 +1,4 @@
-from spark.sql import DataFrame, SparkSession
+from pyspark.sql import DataFrame, SparkSession
 
 
 class GoldAggregations:
