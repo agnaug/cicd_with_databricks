@@ -1,17 +1,11 @@
 # Databricks notebook source
-username = (
-    dbutils.notebook.entry_point.getDbutils()
-    .notebook()
-    .getContext()
-    .userName()
-    .get()
-    .replace(".", "_")
-)
+username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get().replace(".", "_")
 user = username[: username.index("@")]
 
 # COMMAND ----------
 
 from gold_layer_etl import GoldAggregations
+
 
 # COMMAND ----------
 
@@ -39,20 +33,8 @@ query5 = GoldAggregations.avg_sales_by_month(spark, "sales")
 # COMMAND ----------
 
 # write the query results to Delta Lake in Gold layer
-query1.write.format("delta").mode("overwrite").saveAsTable(
-    f"{user}_gold_db.total_orders"
-)
-query2.write.format("delta").mode("overwrite").saveAsTable(
-    f"{user}_gold_db.total_sales"
-)
-query3.write.format("delta").mode("overwrite").saveAsTable(
-    f"{user}_gold_db.best_selling_products"
-)
-query4.write.format("delta").mode("overwrite").saveAsTable(
-    f"{user}_gold_db.statewise_customers"
-)
-query5.write.format("delta").mode("overwrite").saveAsTable(
-    f"{user}_gold_db.monthly_sales"
-)
-
-# COMMAND ----------
+query1.write.format("delta").mode("overwrite").saveAsTable(f"{user}_gold_db.total_orders")
+query2.write.format("delta").mode("overwrite").saveAsTable(f"{user}_gold_db.total_sales")
+query3.write.format("delta").mode("overwrite").saveAsTable(f"{user}_gold_db.best_selling_products")
+query4.write.format("delta").mode("overwrite").saveAsTable(f"{user}_gold_db.statewise_customers")
+query5.write.format("delta").mode("overwrite").saveAsTable(f"{user}_gold_db.monthly_sales")

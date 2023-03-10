@@ -1,5 +1,10 @@
 # Databricks notebook source
-pip install faker
+dbutils.widgets.text("env", "")
+dbutils.widgets.text("num_rows", "10")
+
+# COMMAND ----------
+
+pip install faker==17.6.0
 
 # COMMAND ----------
 

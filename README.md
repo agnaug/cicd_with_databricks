@@ -61,3 +61,26 @@ __Action time!__
 * Once it succeeds, merge the pull request into develop branch and view the CICD integration testing job that spins up.
 * Once integration tests are completed on develop branch, raise a PR from develop branch into main. View the CICD job that spins up, runs unit & integration tests.
 * Once it succeeds, merge the pull request into develop branch and view the CICD job that creates Databricks workflow jobs and launches them.
+
+# Optional
+If running some of that linting locally, here's some useful steps (for mac users):
+* install xcode-select
+* install homebrew
+* install pyenv
+* install pyenv-virtualenv [for mac users](https://github.com/pyenv/pyenv-virtualenv#using-pyenv-virtualenv-with-pyenv)
+    - Update your shell .rc file (I use zsh shell so it's ~/.zshrc file for me)
+    ```sh
+    echo '' >> ~/.zshrc
+    echo '# Add pyenv-virtualenv' >> ~/.zshrc
+    echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
+    echo 'export PYENV_VIRTUALENV_DISABLE_PROMPT=1' >> ~/.zshrc
+    ```
+* Example usage for this project:
+    - ```sh
+    pyenv virtualenv 3.9 cicd-3.9
+    pyenv activate cicd-3.9
+    # and to disable
+    # pyenv diactivate cicd-3.9
+
+    pip install -r unit-testing-requirements.txt
+    ```

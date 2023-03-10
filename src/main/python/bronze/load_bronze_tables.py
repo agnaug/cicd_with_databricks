@@ -1,5 +1,9 @@
 # Databricks notebook source
+dbutils.widgets.text("env", "")
+dbutils.widgets.text("source_dataset", "customers")
+
 env = dbutils.widgets.get("env")
+dataset = dbutils.widgets.get("source_dataset")
 
 # COMMAND ----------
 
@@ -7,11 +11,6 @@ env = dbutils.widgets.get("env")
 
 # COMMAND ----------
 
-# Call the load_data_to_bronze function
-
-dataset = dbutils.widgets.get("source_dataset")
-
 # Set the target location for the delta table
 target_path = f"/FileStore/{username}_bronze_db/"
-
 load_data_to_bronze(dataset, target_path, env)
