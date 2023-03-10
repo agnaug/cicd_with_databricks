@@ -1,7 +1,6 @@
 # Databricks notebook source
-username = dbutils.notebook.entry_point.getDbutils(
-).notebook().getContext().userName().get().replace('.', '_')
-user = username[:username.index("@")]
+username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get().replace(".", "_")
+user = username[: username.index("@")]
 
 # COMMAND ----------
 
@@ -9,9 +8,9 @@ env = dbutils.widgets.get("env")
 
 # COMMAND ----------
 
-bronze_path = f'/FileStore/{username}_bronze_db/' + env
-silver_path = f'/FileStore/{username}_silver_db/' + env
-gold_path = f'/FileStore/{username}_gold_db/' + env
+bronze_path = f"/FileStore/{username}_bronze_db/" + env
+silver_path = f"/FileStore/{username}_silver_db/" + env
+gold_path = f"/FileStore/{username}_gold_db/" + env
 
 # COMMAND ----------
 

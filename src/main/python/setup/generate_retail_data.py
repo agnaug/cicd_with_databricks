@@ -1,32 +1,30 @@
 # Databricks notebook source
+pip install faker
+
+# COMMAND ----------
+
+# Standard Library
+import random
+
+from faker import Faker
+from pyspark.sql.functions import *
+from pyspark.sql.functions import current_timestamp
 from pyspark.sql.types import (
-    StructType,
-    StructField,
-    StringType,
-    TimestampType,
     IntegerType,
     LongType,
+    StringType,
+    StructField,
+    StructType,
+    TimestampType,
 )
-from faker import Faker
-import random
-from pyspark.sql.functions import current_timestamp
-from pyspark.sql.functions import *
 
 
 # COMMAND ----------
 
-username = (
-    dbutils.notebook.entry_point.getDbutils()
-    .notebook()
-    .getContext()
-    .userName()
-    .get()
-    .replace(".", "_")
-)
+username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get().replace(".", "_")
 output_dir = f"/FileStore/{username}/retail_dataset/"
 
 # COMMAND ----------
-
 
 def generate_orders_data(num_rows: int, env: str) -> None:
     """
@@ -51,23 +49,19 @@ def generate_orders_data(num_rows: int, env: str) -> None:
         order_id = fake.uuid4()
         customer_id = random.randint(1, 10000)
         order_date = fake.date_time_between(start_date="-1y", end_date="now")
-        order_status = fake.random_element(
-            elements=("pending", "processing", "shipped")
-        )
+        order_status = fake.random_element(elements=("pending", "processing", "shipped"))
         orders_data.append((order_id, customer_id, order_date, order_status))
 
     # Create DataFrame from orders data and apply schema
     orders_df = spark.createDataFrame(orders_data, schema)
 
     # Write orders data to Delta table
-    orders_df.coalesce(1).write.format("csv").option("header", "true").mode(
-        "overwrite"
-    ).save(output_dir + env + "/orders")
+    orders_df.coalesce(1).write.format("csv").option("header", "true").mode("overwrite").save(
+        output_dir + env + "/orders"
+    )
     print("Orders file generated")
 
-
 # COMMAND ----------
-
 
 def generate_sales_data(num_rows, env: str):
     fake = Faker()
@@ -98,14 +92,12 @@ def generate_sales_data(num_rows, env: str):
     # Add a timestamp column
     sales_df = sales_df.withColumn("ingest_timestamp", current_timestamp())
 
-    sales_df.coalesce(1).write.format("csv").option("header", "true").mode(
-        "overwrite"
-    ).save(output_dir + env + "/sales")
+    sales_df.coalesce(1).write.format("csv").option("header", "true").mode("overwrite").save(
+        output_dir + env + "/sales"
+    )
     print("Sales file generated")
 
-
 # COMMAND ----------
-
 
 def generate_product_data(num_rows, env: str):
     """
@@ -148,23 +140,14 @@ def generate_product_data(num_rows, env: str):
     # create spark dataframe
     product_df = spark.createDataFrame(product_data, schema=schema)
 
-    product_df.coalesce(1).write.format("csv").option("header", "true").mode(
-        "overwrite"
-    ).save(output_dir + env + "/products")
+    product_df.coalesce(1).write.format("csv").option("header", "true").mode("overwrite").save(
+        output_dir + env + "/products"
+    )
     print("Products file generated")
-
 
 # COMMAND ----------
 
-
-username = (
-    dbutils.notebook.entry_point.getDbutils()
-    .notebook()
-    .getContext()
-    .userName()
-    .get()
-    .replace(".", "_")
-)
+username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get().replace(".", "_")
 output_dir = f"/FileStore/{username}/retail_dataset/"
 
 
@@ -190,22 +173,18 @@ def generate_customer_data_day_0(num_rows: int, env: str):
         phone_number = fake.phone_number()
         start_date = fake.date_time_between(start_date="-5y", end_date="-1y")
 
-        customer_data.append(
-            (customer_id, customer_name, state, company, phone_number, start_date)
-        )
+        customer_data.append((customer_id, customer_name, state, company, phone_number, start_date))
 
     # create spark dataframe
     customer_df = spark.createDataFrame(customer_data, schema=schema)
 
     # Write to Delta Lake as bronze layer
-    customer_df.coalesce(1).write.format("csv").option("header", "true").mode(
-        "overwrite"
-    ).save(output_dir + env + "/customers/")
+    customer_df.coalesce(1).write.format("csv").option("header", "true").mode("overwrite").save(
+        output_dir + env + "/customers/"
+    )
     print("Customers day0 file generated")
 
-
 # COMMAND ----------
-
 
 def generate_customer_data_day_2(env: str):
     fake = Faker()
@@ -235,7 +214,7 @@ def generate_customer_data_day_2(env: str):
     customer_df = spark.createDataFrame(customer_data, schema=schema)
 
     # Write to Delta Lake as bronze layer
-    customer_df.coalesce(1).write.format("csv").option("header", "true").mode(
-        "append"
-    ).save(output_dir + env + "/customers")
+    customer_df.coalesce(1).write.format("csv").option("header", "true").mode("append").save(
+        output_dir + env + "/customers"
+    )
     print("Customers day1 file generated")

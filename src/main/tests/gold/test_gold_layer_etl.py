@@ -3,18 +3,28 @@ pip install pytest
 
 # COMMAND ----------
 
-import pytest
+# Standard Library
+# "Standard Library"
 import sys
+
+# "Third Party"
+import pytest
+
 
 # COMMAND ----------
 
 sys.path.append("../../python/gold/")
+# Standard Library
+# "Standard Library"
+from datetime import datetime
+
+# "Third Party"
 from gold_layer_etl import GoldAggregations
+from pyspark.sql.functions import col
+
 
 # COMMAND ----------
 
-from pyspark.sql.functions import col
-from datetime import datetime
 
 order_data = [
     ('order1', 1, datetime(2022, 1, 1, 0, 0, 0), 'completed'),
