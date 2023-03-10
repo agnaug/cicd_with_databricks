@@ -38,7 +38,7 @@ def test_scd2_transform():
     assert set(customer_dim_df.columns) == set(dim_cols)
     # Test that each customer_id has only one record with the most recent end_date
     assert (
-        customer_dim_df.groupBy("customer_id").agg(max("end_date")).filter(F.col("max(end_date)") != end_date).count()
+        customer_dim_df.groupBy("customer_id").agg(F.max("end_date")).filter(F.col("max(end_date)") != end_date).count()
     ) == 0
     spark.sql(f"drop table if exists {user}_silver_db_test.silver_customers")
 
