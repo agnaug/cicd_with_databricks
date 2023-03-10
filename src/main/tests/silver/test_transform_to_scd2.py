@@ -20,8 +20,7 @@ customer_df = spark.read.format("delta").option("header", True).load(f"{input_pa
 spark.sql(f"drop table if exists {user}_silver_db_test.silver_customers")
 
 # Call the function to transform the customer data into a dimension table with SCD type 2
-transform_to_scd2(customer_df, mode="test")
-
+transform_to_scd2(spark, customer_df, mode="test")
 
 # Define unit tests for the SCD type 2 transformation
 def test_scd2_transform():
