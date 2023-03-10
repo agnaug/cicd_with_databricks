@@ -1,8 +1,4 @@
 # Databricks notebook source
-pip install faker
-
-# COMMAND ----------
-
 username = (
     dbutils.notebook.entry_point.getDbutils()
     .notebook()
@@ -26,7 +22,7 @@ env = dbutils.widgets.get("env")
 
 # COMMAND ----------
 
-source_dataset_df = spark.read.format("delta").load(input_path + "bronze_customers")
+source_dataset_df = spark.read.format("delta").load(f"{input_path}bronze_customers")
 transform_to_scd2(source_dataset_df, "prod")
 
 # COMMAND ----------

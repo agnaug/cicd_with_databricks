@@ -1,7 +1,7 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC # In this code, we've added standardisation functions to
-# MAGIC # clean and standardise the name, address, city, and state columns
+# MAGIC # In this code, we've added standardization functions to
+# MAGIC # clean and standardize the name, address, city, and state columns
 # MAGIC # in the customer data. We've also added transformation functions
 # MAGIC # to add the customer and order details to the sales data,
 # MAGIC # and to convert the sales data to different currencies using exchange rates.
@@ -63,9 +63,7 @@ def standardize_product_data(df):
     df = (
         df.withColumn("product_id", col("product_id").cast("Integer"))
         .withColumn("product_start_date", col("product_start_date").cast("Timestamp"))
-        .withColumn(
-            "product_category", coalesce(col("product_category"), lit("Unknown"))
-        )
+        .withColumn("product_category", coalesce(col("product_category"), lit("Unknown")))
         .select("product_id", "product_category", "product_start_date")
     )
 

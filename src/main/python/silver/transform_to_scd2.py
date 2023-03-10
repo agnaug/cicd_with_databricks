@@ -1,20 +1,12 @@
 # Databricks notebook source
-# "Third Party"
 from delta.tables import DeltaTable
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
-from pyspark.sql import types as T
 
+from .utils.utils import get_username, get_user
 
-username = (
-    dbutils.notebook.entry_point.getDbutils()
-    .notebook()
-    .getContext()
-    .userName()
-    .get()
-    .replace(".", "_")
-)
-user = username[: username.index("@")]
+username = get_username(dbutils)
+user = get_user(username)
 
 # COMMAND ----------
 
@@ -39,7 +31,7 @@ def transform_to_scd2(spark: SparkSession, customer_data: DataFrame, mode: str) 
     # Generate SCD Type 2 table
 
     if mode == "test":
-        output_path = f"'/FileStore/{user}_silver_db_test/'"
+        output_path = f"/FileStore/{user}_silver_db_test/"
         spark.sql(
             f"""
             CREATE DATABASE IF NOT EXISTS {user}_silver_db_test
