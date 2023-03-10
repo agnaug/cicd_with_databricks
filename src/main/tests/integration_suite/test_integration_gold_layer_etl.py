@@ -1,6 +1,6 @@
 # Databricks notebook source
 username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get()
-user = username[:username.index("@")].replace('.', '_')
+user = username[: username.index("@")].replace(".", "_")
 
 # COMMAND ----------
 
@@ -50,6 +50,8 @@ query5 = GoldAggregations.avg_sales_by_month(spark, "sales")
 
 assert query1.select("total_orders").collect()[0].total_orders == 1000
 assert query2.select("total_sales").collect()[0].total_sales > 0.0
-assert query3.columns == ["product_id","product_category","total_sales"]
-assert query4.select("total_customers").filter("state = 'Utah'").collect()[0].total_customers > 0.0
-assert query5.select("avg_sales").filter((col('year') == '2022') & (col('month') == '10')).collect()[0].avg_sales > 50.0
+assert query3.columns == ["product_id", "product_category", "total_sales"]
+assert (query4.select("total_customers").filter("state = 'Utah'").collect()[0].total_customers) > 0.0
+assert (
+    query5.select("avg_sales").filter((col("year") == "2022") & (col("month") == "10")).collect()[0].avg_sales
+) > 50.0

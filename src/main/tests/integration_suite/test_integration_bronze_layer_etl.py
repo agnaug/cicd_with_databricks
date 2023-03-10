@@ -1,7 +1,6 @@
 # Databricks notebook source
-username = dbutils.notebook.entry_point.getDbutils(
-).notebook().getContext().userName().get().replace('.', '_')
-user = username[:username.index("@")]
+username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get().replace(".", "_")
+user = username[: username.index("@")]
 
 # COMMAND ----------
 
@@ -9,8 +8,8 @@ env = dbutils.widgets.get("env")
 
 # COMMAND ----------
 
-source_dataset = 'customers'
-target_path = f'/FileStore/{username}_bronze_db/' + env + '/'
+source_dataset = "customers"
+target_path = f"/FileStore/{username}_bronze_db/" + env + "/"
 
 # COMMAND ----------
 
@@ -23,38 +22,38 @@ target_path = f'/FileStore/{username}_bronze_db/' + env + '/'
 # Load the data into the bronze layer
 load_data_to_bronze(source_dataset, target_path, env)
 
-customers_bronze_df = spark.read.format("delta").load(target_path+"/bronze_customers")
+customers_bronze_df = spark.read.format("delta").load(target_path + "/bronze_customers")
 assert customers_bronze_df.count() == 1000  # Assumes that there are 1000 rows in the original data source
 
 # COMMAND ----------
 
-source_dataset = 'products'
+source_dataset = "products"
 
 # COMMAND ----------
 
 load_data_to_bronze(source_dataset, target_path, env)
 
-products_bronze_df = spark.read.format("delta").load(target_path+"/bronze_products")
+products_bronze_df = spark.read.format("delta").load(target_path + "/bronze_products")
 assert products_bronze_df.count() == 1000  # Assumes that there are 1000 rows in the original data source
 
 # COMMAND ----------
 
-source_dataset = 'orders'
+source_dataset = "orders"
 
 # COMMAND ----------
 
 load_data_to_bronze(source_dataset, target_path, env)
 
-orders_bronze_df = spark.read.format("delta").load(target_path+"/bronze_orders")
+orders_bronze_df = spark.read.format("delta").load(target_path + "/bronze_orders")
 assert orders_bronze_df.count() == 1000  # Assumes that there are 1000 rows in the original data source
 
 # COMMAND ----------
 
-source_dataset = 'sales'
+source_dataset = "sales"
 
 # COMMAND ----------
 
 load_data_to_bronze(source_dataset, target_path, env)
 
-sales_bronze_df = spark.read.format("delta").load(target_path+"/bronze_sales")
+sales_bronze_df = spark.read.format("delta").load(target_path + "/bronze_sales")
 assert sales_bronze_df.count() == 1000  # Assumes that there are 1000 rows in the original data source

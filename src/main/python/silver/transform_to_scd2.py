@@ -36,7 +36,8 @@ def transform_to_scd2(spark: SparkSession, customer_data: DataFrame, mode: str) 
             f"""
             CREATE DATABASE IF NOT EXISTS {user}_silver_db_test
             LOCATION {output_path}
-            """)
+            """
+        )
 
         spark.sql(
             f"""
@@ -50,13 +51,14 @@ def transform_to_scd2(spark: SparkSession, customer_data: DataFrame, mode: str) 
               start_date TIMESTAMP,
               end_date TIMESTAMP
               )
-            """)
+            """
+        )
 
         silver_customers = DeltaTable.forName(spark, f"{user}_silver_db_test.silver_customers")
 
     else:
         silver_customers = DeltaTable.forName(spark, f"{user}_silver_db.silver_customers")
-    
+
     effective_date = F.lit(F.current_date())
     scd2_data = (
         customer_data.select("customer_id", "customer_name", "state", "company", "phone_number")
@@ -69,15 +71,15 @@ def transform_to_scd2(spark: SparkSession, customer_data: DataFrame, mode: str) 
     merge_condition = "scd2.customer_id = source.customer_id"
     set_values = {"end_date": F.date_sub(F.current_date(), 1)}
     insert_values = {
-                "customer_id": F.col("source.customer_id"),
-                "customer_name": F.col("source.customer_name"),
-                "state": F.col("source.state"),
-                "company": F.col("source.company"),
-                "phone_number": F.col("source.phone_number"),
-                "start_date": F.col("source.start_date"),
-                "end_date": F.col("source.end_date"),
-            }
-    
+        "customer_id": F.col("source.customer_id"),
+        "customer_name": F.col("source.customer_name"),
+        "state": F.col("source.state"),
+        "company": F.col("source.company"),
+        "phone_number": F.col("source.phone_number"),
+        "start_date": F.col("source.start_date"),
+        "end_date": F.col("source.end_date"),
+    }
+
     (
         silver_customers.alias("scd2")
         .merge(scd2_data.alias("source"), merge_condition)

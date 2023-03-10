@@ -13,14 +13,7 @@
 from pyspark.sql.functions import coalesce, col, lit, round, to_date, when
 
 
-username = (
-    dbutils.notebook.entry_point.getDbutils()
-    .notebook()
-    .getContext()
-    .userName()
-    .get()
-    .replace(".", "_")
-)
+username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get().replace(".", "_")
 user = username[: username.index("@")]
 output_db = f"{user}_silver_db"
 
@@ -33,9 +26,7 @@ def transform_to_silver_1(orders_bronze_df):
         orders_bronze_df.withColumn("order_date", col("order_date").cast("Timestamp"))
         .withColumn(
             "order_status",
-            when(col("order_status") == "shipped", "completed").otherwise(
-                col("order_status")
-            ),
+            when(col("order_status") == "shipped", "completed").otherwise(col("order_status")),
         )
         .withColumn("customer_id", col("customer_id").cast("Integer"))
         .select("order_id", "order_date", "customer_id", "order_status")

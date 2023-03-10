@@ -10,7 +10,7 @@ class DButils(Protocol):
 
 def get_username(dbutils: DButils) -> str:
     username = (
-        dbutils.notebook.entry_point.getDbutils() # type: ignore
+        dbutils.notebook.entry_point.getDbutils()  # type: ignore
         .notebook()
         .getContext()
         .userName()
