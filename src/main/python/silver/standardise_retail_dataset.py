@@ -23,7 +23,7 @@ output_db = f"{user}_silver_db"
 def transform_bronze_orders(df: DataFrame) -> DataFrame:
     # Apply standardizations to order data
     df = (
-        orders_bronze_df.withColumn("order_date", F.col("order_date").cast("Timestamp"))
+        df.withColumn("order_date", F.col("order_date").cast("Timestamp"))
         .withColumn(
             "order_status",
             F.when(F.col("order_status") == "shipped", "completed").otherwise(F.col("order_status")),
