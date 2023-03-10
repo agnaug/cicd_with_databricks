@@ -45,7 +45,7 @@ def test_transform_bronze_orders():
 def test_transform_bronze_sales():
     # Create input data
     input_data = [("1", "100", "2022-12-11T04:03:39.000Z", "50", "US", "AUD")]
-    input_schema = StructType(
+    input_schema = T.StructType(
         [
             T.StructField("sale_id", T.StringType(), True),
             T.StructField("product_id", T.StringType(), True),
