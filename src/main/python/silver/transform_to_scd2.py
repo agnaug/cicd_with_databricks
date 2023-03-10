@@ -1,15 +1,18 @@
 # Databricks notebook source
-import sys
+# Standard Library
 import os
+import sys
+from enum import Enum
+
 from delta import DeltaTable
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
-from dataclasses import dataclass
-from enum import Enum
+
 
 # this is needed to be able to import from relative paths
-sys.path.append(os.path.abspath('..'))
+sys.path.append(os.path.abspath(".."))
 from utils.utils import get_user, get_username
+
 
 username = get_username(dbutils)
 user = get_user(username)
@@ -20,9 +23,11 @@ user = get_user(username)
 start_date = F.to_date(F.lit("2022-01-01"))
 end_date = F.to_date(F.lit("9999-12-31"))
 
+
 class PipelineMode(str, Enum):
-  TEST = "test"
-  PROD = "prod"
+    TEST = "test"
+    PROD = "prod"
+
 
 def transform_to_scd2(spark: SparkSession, customer_data: DataFrame, mode: str = PipelineMode.PROD) -> None:
     # Generate SCD Type 2 table

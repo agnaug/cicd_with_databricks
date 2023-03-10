@@ -15,6 +15,7 @@ bronze_options = {"mode": "DROPMALFORMED", "header": True}
 
 # COMMAND ----------
 
+
 def load_data_to_bronze(source_dataset: str, target_path: str, env: str) -> None:
     # Ingest the data into the bronze layer
     schema_location = target_path + "_checkpoints/" + source_dataset

@@ -6,6 +6,7 @@ user = username[: username.index("@")]
 
 from gold_layer_etl import GoldAggregations
 
+
 # COMMAND ----------
 
 # Read in the necessary tables

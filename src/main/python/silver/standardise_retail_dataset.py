@@ -9,15 +9,18 @@
 
 # COMMAND ----------
 
-import sys
+# Standard Library
 import os
+import sys
 
-from pyspark.sql import functions as F
 from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
+
 
 # this is needed to be able to import from relative paths
-sys.path.append(os.path.abspath('..'))
+sys.path.append(os.path.abspath(".."))
 from utils.utils import get_user, get_username
+
 
 username = get_username(dbutils)
 user = get_user(username)
@@ -25,11 +28,15 @@ output_db = f"{user}_silver_db"
 
 # COMMAND ----------
 
+
 def transform_bronze_orders(df: DataFrame) -> DataFrame:
     # Apply standardizations to order data
     df = (
         orders_bronze_df.withColumn("order_date", F.col("order_date").cast("Timestamp"))
-        .withColumn("order_status", F.when(F.col("order_status") == "shipped", "completed").otherwise(F.col("order_status")))
+        .withColumn(
+            "order_status",
+            F.when(F.col("order_status") == "shipped", "completed").otherwise(F.col("order_status")),
+        )
         .withColumn("customer_id", F.col("customer_id").cast("Integer"))
         .select("order_id", "order_date", "customer_id", "order_status")
     )
@@ -40,21 +47,21 @@ def transform_bronze_sales(df: DataFrame) -> DataFrame:
     # Apply standardizations to sales data
     df = (
         df.withColumn("sale_date", F.to_date(F.col("sale_date").cast("Date")))
-        .withColumn("sale_amount",F.round(F.col("sale_amount").cast("Double") * 0.9, 2))
+        .withColumn("sale_amount", F.round(F.col("sale_amount").cast("Double") * 0.9, 2))
         .withColumn("currency", F.lit("USD"))
         .withColumn("product_id", F.col("product_id").cast("Integer"))
         .select("sale_id", "product_id", "sale_date", "sale_amount", "currency")
     )
     return df
 
-    
+
 def transform_bronze_products(df: DataFrame) -> DataFrame:
-      # Replace null values in "product_category" column with "Unknown"
-      df = (
-          df.withColumn("product_id", F.col("product_id").cast("Integer"))
-          .withColumn("product_start_date", F.col("product_start_date").cast("Timestamp"))
-          .withColumn("product_category", F.coalesce(F.col("product_category"), F.lit("Unknown")))
-          .select("product_id", "product_category", "product_start_date")
-      )
-  
-      return df
+    # Replace null values in "product_category" column with "Unknown"
+    df = (
+        df.withColumn("product_id", F.col("product_id").cast("Integer"))
+        .withColumn("product_start_date", F.col("product_start_date").cast("Timestamp"))
+        .withColumn("product_category", F.coalesce(F.col("product_category"), F.lit("Unknown")))
+        .select("product_id", "product_category", "product_start_date")
+    )
+
+    return df

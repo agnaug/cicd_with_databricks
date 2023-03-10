@@ -18,6 +18,7 @@ from pyspark.sql.types import (
     TimestampType,
 )
 
+
 # COMMAND ----------
 
 username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get().replace(".", "_")
