@@ -3,7 +3,8 @@ from delta.tables import DeltaTable
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 
-from .utils.utils import get_username, get_user
+from .utils.utils import get_user, get_username
+
 
 username = get_username(dbutils)
 user = get_user(username)
@@ -14,17 +15,6 @@ user = get_user(username)
 # Define the start and end dates for each record in the dimension table
 start_date = F.to_date(F.lit("2022-01-01"))
 end_date = F.to_date(F.lit("9999-12-31"))
-
-# Define the columns to include in the dimension table
-dim_cols = [
-    "customer_id",
-    "customer_name",
-    "state",
-    "company",
-    "phone_number",
-    "start_date",
-    "end_date",
-]
 
 
 def transform_to_scd2(spark: SparkSession, customer_data: DataFrame, mode: str) -> None:
